@@ -96,6 +96,45 @@ Content-Type: application/json
 GET http://localhost:3000/api/iot/recent
 
 
+### Skapa Company
+$company = @{ name = "Acme" } | ConvertTo-Json
+$companyRes = Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/companies" -ContentType "application/json" -Body $company
+$companyId = $companyRes.id
+$companyRes
+
+### Lista
+Invoke-RestMethod "http://localhost:3000/api/companies"
+
+### Hämta enskild
+Invoke-RestMethod "http://localhost:3000/api/companies/$companyId"
+
+### Create Package (requires companyId)
+$pkgBody = @{ trackingId = "PKG-001"; companyId = $companyId; recipientName = "Bob" } | ConvertTo-Json
+$pkgRes  = Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/packages" -ContentType "application/json" -Body $pkgBody
+$pkgId = $pkgRes.id
+$pkgRes
+
+### Update status
+Invoke-RestMethod -Method Patch -Uri "http://localhost:3000/api/packages/$pkgId/status" -ContentType "application/json" -Body (@{ status = "in_transit" } | ConvertTo-Json)
+
+### Append a sensor reading
+Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/packages/$pkgId/sensor" -ContentType "application/json" -Body (@{ payload = @{ temp = 21.5 } } | ConvertTo-Json)
+
+### View list/details
+Invoke-RestMethod "http://localhost:3000/api/packages"
+Invoke-RestMethod "http://localhost:3000/api/packages/$pkgId"
+
+### Update
+Invoke-RestMethod -Method Patch -Uri "http://localhost:3000/api/users/9c6c6509-9779-4aae-b040-87eda0a085c0" -ContentType "application/json" -Body (@{ name = "Alice Chen" } | ConvertTo-Json)
+
+### List
+Invoke-RestMethod "http://localhost:3000/api/users"
+
+### Delete
+Invoke-RestMethod -Method Delete -Uri "http://localhost:3000/api/users/<USER_ID>"
+
+
+
 ## 🧭 Troubleshooting (Windows)
 
 - npm not recognized: install Node.js or fix PATH; restart terminal.

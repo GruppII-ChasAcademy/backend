@@ -2,7 +2,7 @@ name: Build & Deploy to Azure Container Apps
 
 on:
   push:
-    branches: ["feature/mvp-api"]    # Change to 'main' after merging to the default branch
+    branches: ["main","feature/mvp-api"]    # Change to 'main' after merging to the default branch
   workflow_dispatch: {}
 
 permissions:

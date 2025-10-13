@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  title: Sensor API
+  version: 1.0.0
+paths:
+  /sensor:
+    post:
+      summary: Skicka sensorvärden
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: number
+      responses:
+        '200':
+          description: Varningsstatus
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    value:
+                      type: number
+                    status:
+                      type: string
+                    reason:
+                      type: string

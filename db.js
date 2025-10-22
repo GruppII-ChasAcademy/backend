@@ -4,7 +4,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 const defaultDb =
   process.env.DB_FILE ||
-  (process.env.WEBSITE_SITE_NAME ? "/home/site/wwwroot/data/app.db" : path.join(__dirname, "data", "app.db"));
+  (process.env.WEBSITE_SITE_NAME ? "/home/data/app.db" : path.join(__dirname, "data", "app.db"));
 
 fs.mkdirSync(path.dirname(defaultDb), { recursive: true });
 
@@ -19,3 +19,4 @@ db.serialize(() => {
 });
 
 module.exports = { db, defaultDb };
+

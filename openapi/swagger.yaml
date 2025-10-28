@@ -1,32 +1,72 @@
 openapi: 3.0.0
 info:
-  title: Sensor API
-  version: 1.0.0
+  title: Våningssystem API
+  description: |
+    Detta API hanterar sensordata för temperatur, luftfuktighet och CO₂.
+    Du kan läsa av sensorer och kontrollera tröskelvärden.
+  version: 1.1.0
+  contact:
+    name: Chas Academy Team 2
+    email: team2@chasacademy.se
+servers:
+  - url: http://localhost:8080
+    description: Lokal utvecklingsserver
+
+tags:
+  - name: Sensorer
+    description: API-endpoints för sensorer
+
 paths:
-  /sensor:
-    post:
-      summary: Skicka sensorvärden
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties:
-                type: number
+  /sensors:
+    get:
+      tags:
+        - Sensorer
+      summary: Lista alla sensorer
+      description: Hämtar en lista med tillgängliga sensorer.
       responses:
-        '200':
-          description: Varningsstatus
+        "200":
+          description: Lyckad förfrågan
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["Temperatur", "Luftfuktighet", "CO2"]
+
+  /sensors/{name}/{value}:
+    get:
+      tags:
+        - Sensorer
+      summary: Kontrollera sensorvärde
+      description: Returnerar status baserat på om värdet ligger inom tröskelgränserna.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [Temperatur, Luftfuktighet, CO2]
+        - name: value
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Resultat av kontroll
           content:
             application/json:
               schema:
                 type: object
-                additionalProperties:
-                  type: object
-                  properties:
-                    value:
-                      type: number
-                    status:
-                      type: string
-                    reason:
-                      type: string
+                properties:
+                  value:
+                    type: number
+                  status:
+                    type: string
+                  reason:
+                    type: string
+                example:
+                  value: 35.5
+                  status: "VARNING"
+                  reason: "Avvikelse i Temperatur"

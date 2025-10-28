@@ -1,7 +1,9 @@
 #include "threshold_checker.hpp"
-crow::json::wvalue checkThreshold(const std::string &sensorName, double value)
+
+ThresholdResult checkThreshold(const std::string &sensorName, double value)
 {
     double min = 0.0, max = 0.0;
+
     if (sensorName == "Temperatur")
     {
         min = 0.0;
@@ -18,16 +20,19 @@ crow::json::wvalue checkThreshold(const std::string &sensorName, double value)
         max = 1000.0;
     }
 
-    crow::json::wvalue result;
-    result["value"] = value;
+    ThresholdResult result;
+    result.value = value;
+
     if (value < min || value > max)
     {
-        result["status"] = "VARNING";
-        result["reason"] = "Avvikelse i " + sensorName;
+        result.status = "VARNING";
+        result.reason = "Avvikelse i " + sensorName;
     }
     else
     {
-        result["status"] = "OK";
+        result.status = "OK";
+        result.reason = "";
     }
+
     return result;
 }

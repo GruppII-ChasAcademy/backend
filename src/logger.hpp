@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
 #include <string>
 
-void logWarning(const std::string &sensorName, double value);
+inline void log(const std::string &msg)
+{
+    std::cout << "[LOG] " << msg << std::endl;
+}

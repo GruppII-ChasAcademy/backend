@@ -1,22 +1,25 @@
+#include "httplib.h"
 #include "sensor_controller.hpp"
 #include "threshold_checker.hpp"
-#include "logger.hpp"
+#include <string>
 
-void initSensorRoutes(crow::SimpleApp &app)
+void registerSensorRoutes(httplib::Server &svr)
 {
-    CROW_ROUTE(app, "/sensor").methods("POST"_method)([](const crow::request &req)
-                                                      {
-        auto body = crow::json::load(req.body);
-        crow::json::wvalue response;
+    svr.Get("/sensors", [](const httplib::Request &, httplib::Response &res)
+            {
+        std::string response = R"([{"name":"Temperatur"},{"name":"Luftfuktighet"},{"name":"CO2"}])";
+        res.set_content(response, "application/json"); });
 
-        for (const auto& item : body) {
-            std::string name = item.key();
-            double value = item.value().d();
-            response[name] = checkThreshold(name, value);
-            if (response[name]["status"].s() == "VARNING") {
-                logWarning(name, value);
-            }
-        }
+    svr.Get(R"(/sensors/(\w+)/(\d+(\.\d+)?))", [](const httplib::Request &req, httplib::Response &res)
+            {
+        std::string name = req.matches[1];
+        double value = std::stod(req.matches[2]);
+        ThresholdResult result = checkThreshold(name, value);
 
-        return crow::response{response}; });
+        std::string json = "{"
+                           "\"sensor\":\"" + name + "\","
+                           "\"value\":" + std::to_string(result.value) + ","
+                           "\"status\":\"" + result.status + "\","
+                           "\"reason\":\"" + result.reason + "\"}";
+        res.set_content(json, "application/json"); });
 }

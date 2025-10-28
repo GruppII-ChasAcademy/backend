@@ -1,4 +1,11 @@
 #pragma once
-#include <crow_all.h>
+#include <string>
 
-crow::json::wvalue checkThreshold(const std::string &sensorName, double value);
+struct ThresholdResult
+{
+    std::string status;
+    std::string reason;
+    double value;
+};
+
+ThresholdResult checkThreshold(const std::string &sensorName, double value);

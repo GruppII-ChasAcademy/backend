@@ -1,4 +1,4 @@
 #pragma once
-#include <crow_all.h>
+#include "httplib.h"
 
-void initSensorRoutes(crow::SimpleApp &app);
+void registerSensorRoutes(httplib::Server &svr);

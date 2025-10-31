@@ -1,0 +1,420 @@
+﻿{
+    "openapi":  "3.0.0",
+    "info":  {
+                 "title":  "Backend API Documentation",
+                 "version":  "1.0.0",
+                 "description":  "API för autentisering, användare, företag, paket, IoT och sensorsystem."
+             },
+    "servers":  [
+                    {
+                        "url":  "https://backendgruppii.azurewebsites.net",
+                        "description":  "Azure Production"
+                    }
+                ],
+    "tags":  [
+                 {
+                     "name":  "System"
+                 },
+                 {
+                     "name":  "Secure"
+                 },
+                 {
+                     "name":  "Admin"
+                 },
+                 {
+                     "name":  "Auth"
+                 },
+                 {
+                     "name":  "Companies"
+                 },
+                 {
+                     "name":  "IoT"
+                 },
+                 {
+                     "name":  "Packages"
+                 },
+                 {
+                     "name":  "Users"
+                 },
+                 {
+                     "name":  "Telemetry"
+                 }
+             ],
+    "paths":  {
+                  "/health":  {
+                                  "get":  {
+                                              "tags":  [
+                                                           "System"
+                                                       ],
+                                              "summary":  "Healthcheck",
+                                              "responses":  {
+                                                                "200":  {
+                                                                            "description":  "Tjänsten lever"
+                                                                        }
+                                                            }
+                                          }
+                              },
+                  "/api/secure/ping":  {
+                                           "get":  {
+                                                       "tags":  [
+                                                                    "Secure"
+                                                                ],
+                                                       "summary":  "Ping som kräver giltig JWT",
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK (låtsas att du är auth:ad)"
+                                                                                 },
+                                                                         "401":  {
+                                                                                     "description":  "Inte auktoriserad"
+                                                                                 }
+                                                                     }
+                                                   }
+                                       },
+                  "/api/admin/overview":  {
+                                              "get":  {
+                                                          "tags":  [
+                                                                       "Admin"
+                                                                   ],
+                                                          "summary":  "Admin-only översikt",
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "Admin data"
+                                                                                    },
+                                                                            "403":  {
+                                                                                        "description":  "Forbidden"
+                                                                                    }
+                                                                        }
+                                                      }
+                                          },
+                  "/auth/signup":  {
+                                       "post":  {
+                                                    "tags":  [
+                                                                 "Auth"
+                                                             ],
+                                                    "summary":  "Registrera en ny användare",
+                                                    "responses":  {
+                                                                      "201":  {
+                                                                                  "description":  "Skapad"
+                                                                              }
+                                                                  }
+                                                }
+                                   },
+                  "/auth/login":  {
+                                      "post":  {
+                                                   "tags":  [
+                                                                "Auth"
+                                                            ],
+                                                   "summary":  "Logga in användare",
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "Inloggad"
+                                                                             },
+                                                                     "401":  {
+                                                                                 "description":  "Fel inlogg"
+                                                                             }
+                                                                 }
+                                               }
+                                  },
+                  "/auth/logout":  {
+                                       "post":  {
+                                                    "tags":  [
+                                                                 "Auth"
+                                                             ],
+                                                    "summary":  "Logga ut aktuell användare",
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "Utloggad"
+                                                                              }
+                                                                  }
+                                                }
+                                   },
+                  "/auth/me":  {
+                                   "get":  {
+                                               "tags":  [
+                                                            "Auth"
+                                                        ],
+                                               "summary":  "Hämta info om aktuell användare",
+                                               "responses":  {
+                                                                 "200":  {
+                                                                             "description":  "User info"
+                                                                         },
+                                                                 "401":  {
+                                                                             "description":  "Inte inloggad"
+                                                                         }
+                                                             }
+                                           }
+                               },
+                  "/auth/{id}":  {
+                                     "delete":  {
+                                                    "tags":  [
+                                                                 "Auth"
+                                                             ],
+                                                    "summary":  "Radera användare (admin eller sig själv)",
+                                                    "parameters":  [
+                                                                       {
+                                                                           "name":  "id",
+                                                                           "in":  "path",
+                                                                           "required":  true,
+                                                                           "schema":  {
+                                                                                          "type":  "string"
+                                                                                      }
+                                                                       }
+                                                                   ],
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "Raderad"
+                                                                              },
+                                                                      "403":  {
+                                                                                  "description":  "Ej behörig"
+                                                                              }
+                                                                  }
+                                                }
+                                 },
+                  "/api/companies":  {
+                                         "get":  {
+                                                     "tags":  [
+                                                                  "Companies"
+                                                              ],
+                                                     "summary":  "Lista alla företag",
+                                                     "responses":  {
+                                                                       "200":  {
+                                                                                   "description":  "OK"
+                                                                               }
+                                                                   }
+                                                 }
+                                     },
+                  "/api/iot/sensors":  {
+                                           "get":  {
+                                                       "tags":  [
+                                                                    "IoT"
+                                                                ],
+                                                       "summary":  "Lista alla sensorer",
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK"
+                                                                                 }
+                                                                     }
+                                                   },
+                                           "post":  {
+                                                        "tags":  [
+                                                                     "IoT"
+                                                                 ],
+                                                        "summary":  "Skicka in ett nytt sensorvärde",
+                                                        "responses":  {
+                                                                          "201":  {
+                                                                                      "description":  "Skapad"
+                                                                                  }
+                                                                      }
+                                                    }
+                                       },
+                  "/api/iot/sensors/{name}/{value}":  {
+                                                          "get":  {
+                                                                      "tags":  [
+                                                                                   "IoT"
+                                                                               ],
+                                                                      "summary":  "Kontrollera sensorvärde",
+                                                                      "parameters":  [
+                                                                                         {
+                                                                                             "name":  "name",
+                                                                                             "in":  "path",
+                                                                                             "required":  true,
+                                                                                             "schema":  {
+                                                                                                            "type":  "string"
+                                                                                                        }
+                                                                                         },
+                                                                                         {
+                                                                                             "name":  "value",
+                                                                                             "in":  "path",
+                                                                                             "required":  true,
+                                                                                             "schema":  {
+                                                                                                            "type":  "string"
+                                                                                                        }
+                                                                                         }
+                                                                                     ],
+                                                                      "responses":  {
+                                                                                        "200":  {
+                                                                                                    "description":  "OK"
+                                                                                                }
+                                                                                    }
+                                                                  }
+                                                      },
+                  "/api/packages":  {
+                                        "get":  {
+                                                    "tags":  [
+                                                                 "Packages"
+                                                             ],
+                                                    "summary":  "Lista alla paket/enheter",
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "OK"
+                                                                              }
+                                                                  }
+                                                }
+                                    },
+                  "/api/users":  {
+                                     "get":  {
+                                                 "tags":  [
+                                                              "Users"
+                                                          ],
+                                                 "summary":  "Lista alla användare (safe view)",
+                                                 "responses":  {
+                                                                   "200":  {
+                                                                               "description":  "OK"
+                                                                           }
+                                                               }
+                                             }
+                                 },
+                  "/api/users/{id}":  {
+                                          "get":  {
+                                                      "tags":  [
+                                                                   "Users"
+                                                               ],
+                                                      "summary":  "Hämta specifik användare",
+                                                      "parameters":  [
+                                                                         {
+                                                                             "name":  "id",
+                                                                             "in":  "path",
+                                                                             "required":  true,
+                                                                             "schema":  {
+                                                                                            "type":  "string"
+                                                                                        }
+                                                                         }
+                                                                     ],
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "OK"
+                                                                                },
+                                                                        "404":  {
+                                                                                    "description":  "Hittades inte"
+                                                                                }
+                                                                    }
+                                                  }
+                                      },
+                  "/api/iot/telemetry":  {
+                                             "get":  {
+                                                         "tags":  [
+                                                                      "Telemetry"
+                                                                  ],
+                                                         "summary":  "Hämta senaste värden för ALLA Arduino-enheter (1-100)",
+                                                         "description":  "Returnerar en lista med 100 objekt. Varje objekt innehåller deviceId (t.ex. arduino_uno_r4_055), temperatur, humidity osv.",
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "Array av TelemetryReading"
+                                                                                   }
+                                                                       }
+                                                     }
+                                         },
+                  "/api/iot/telemetry/{deviceNum}":  {
+                                                         "get":  {
+                                                                     "tags":  [
+                                                                                  "Telemetry"
+                                                                              ],
+                                                                     "summary":  "Hämta värdet för en specifik Arduino-enhet",
+                                                                     "description":  "Exempel: deviceNum=55 =\u003e du får arduino_uno_r4_055",
+                                                                     "parameters":  [
+                                                                                        {
+                                                                                            "name":  "deviceNum",
+                                                                                            "in":  "path",
+                                                                                            "required":  true,
+                                                                                            "schema":  {
+                                                                                                           "type":  "integer",
+                                                                                                           "minimum":  1,
+                                                                                                           "maximum":  100
+                                                                                                       }
+                                                                                        }
+                                                                                    ],
+                                                                     "responses":  {
+                                                                                       "200":  {
+                                                                                                   "description":  "Ett TelemetryReading-objekt"
+                                                                                               },
+                                                                                       "400":  {
+                                                                                                   "description":  "deviceNum måste vara 1-100"
+                                                                                               }
+                                                                                   }
+                                                                 }
+                                                     },
+                  "/api/telemetry":  {
+                                         "get":  {
+                                                     "tags":  [
+                                                                  "IoT"
+                                                              ],
+                                                     "summary":  "Hämta telemetri från IoT-enheter (mockad backend)",
+                                                     "description":  "Filter via query params:\n- limit: antal poster att returnera (t.ex. 100)\n- sort: \u0027asc\u0027 eller \u0027desc\u0027 (sorterar på packet)\n- devicePrefix: t.ex. \u0027uno-r4-\u0027 för att bara få Arduino-enheter\n- deviceId: t.ex. \u0027uno-r4-002\u0027 för exakt en enhet\n- packet: t.ex. 3 för att bara få paket 3\n- packetFrom \u0026 packetTo: intervall (t.ex. 2–5)\nExempel:\n  /api/telemetry?limit=100\u0026sort=asc\n  /api/telemetry?deviceId=uno-r4-002\u0026limit=10\u0026sort=asc\n  /api/telemetry?devicePrefix=uno-r4-\u0026packetFrom=2\u0026packetTo=5\u0026sort=asc",
+                                                     "parameters":  [
+                                                                        {
+                                                                            "name":  "limit",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "integer"
+                                                                                       },
+                                                                            "description":  "Max antal rader att returnera (ex 100)"
+                                                                        },
+                                                                        {
+                                                                            "name":  "sort",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "string",
+                                                                                           "enum":  [
+                                                                                                        "asc",
+                                                                                                        "desc"
+                                                                                                    ]
+                                                                                       },
+                                                                            "description":  "asc eller desc (standard asc)"
+                                                                        },
+                                                                        {
+                                                                            "name":  "devicePrefix",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "string"
+                                                                                       },
+                                                                            "description":  "Filtrera på enhets-prefix. Ex: uno-r4-"
+                                                                        },
+                                                                        {
+                                                                            "name":  "deviceId",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "string"
+                                                                                       },
+                                                                            "description":  "Exakt enhet. Ex: uno-r4-002"
+                                                                        },
+                                                                        {
+                                                                            "name":  "packet",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "integer"
+                                                                                       },
+                                                                            "description":  "Endast visst paketnummer"
+                                                                        },
+                                                                        {
+                                                                            "name":  "packetFrom",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "integer"
+                                                                                       },
+                                                                            "description":  "Start på paketintervall (inklusive)"
+                                                                        },
+                                                                        {
+                                                                            "name":  "packetTo",
+                                                                            "in":  "query",
+                                                                            "required":  false,
+                                                                            "schema":  {
+                                                                                           "type":  "integer"
+                                                                                       },
+                                                                            "description":  "Slut på paketintervall (inklusive)"
+                                                                        }
+                                                                    ],
+                                                     "responses":  {
+                                                                       "200":  {
+                                                                                   "description":  "Array av telemetrirader (mock)"
+                                                                               }
+                                                                   }
+                                                 }
+                                     }
+              }
+}

@@ -1,0 +1,183 @@
+﻿{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Backend API Documentation",
+    "version": "1.0.0",
+    "description": "API för autentisering, användare, företag, paket, IoT och sensorsystem."
+  },
+ "servers": [
+  {
+    "url": "https://backendgruppii.azurewebsites.net",
+    "description": "Azure Production"
+  }
+]
+,
+  "tags": [
+    { "name": "System" },
+    { "name": "Secure" },
+    { "name": "Admin" },
+    { "name": "Auth" },
+    { "name": "Companies" },
+    { "name": "IoT" },
+    { "name": "Packages" },
+    { "name": "Users" }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Healthcheck",
+        "responses": {
+          "200": {
+            "description": "Tjänsten lever"
+          }
+        }
+      }
+    },
+    "/api/secure/ping": {
+      "get": {
+        "tags": ["Secure"],
+        "summary": "Ping som kräver giltig JWT",
+        "responses": {
+          "200": { "description": "OK (låtsas att du är auth:ad)" },
+          "401": { "description": "Inte auktoriserad" }
+        }
+      }
+    },
+    "/api/admin/overview": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Admin-only översikt",
+        "responses": {
+          "200": { "description": "Admin data" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Registrera en ny användare",
+        "responses": {
+          "201": { "description": "Skapad" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logga in användare",
+        "responses": {
+          "200": { "description": "Inloggad" },
+          "401": { "description": "Fel inlogg" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logga ut aktuell användare",
+        "responses": {
+          "200": { "description": "Utloggad" }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Hämta info om aktuell användare",
+        "responses": {
+          "200": { "description": "User info" },
+          "401": { "description": "Inte inloggad" }
+        }
+      }
+    },
+    "/auth/{id}": {
+      "delete": {
+        "tags": ["Auth"],
+        "summary": "Radera användare (admin eller sig själv)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Raderad" },
+          "403": { "description": "Ej behörig" }
+        }
+      }
+    },
+    "/api/companies": {
+      "get": {
+        "tags": ["Companies"],
+        "summary": "Lista alla företag",
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/api/iot/sensors": {
+      "get": {
+        "tags": ["IoT"],
+        "summary": "Lista alla sensorer",
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      },
+      "post": {
+        "tags": ["IoT"],
+        "summary": "Skicka in ett nytt sensorvärde",
+        "responses": {
+          "201": { "description": "Skapad" }
+        }
+      }
+    },
+    "/api/iot/sensors/{name}/{value}": {
+      "get": {
+        "tags": ["IoT"],
+        "summary": "Kontrollera sensorvärde",
+        "parameters": [
+          { "name": "name", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "value", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/api/packages": {
+      "get": {
+        "tags": ["Packages"],
+        "summary": "Lista alla paket/enheter",
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Lista alla användare (safe view)",
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Hämta specifik användare",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Hittades inte" }
+        }
+      }
+    }
+  }
+}

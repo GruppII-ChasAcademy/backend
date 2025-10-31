@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/9f7950b2-adaf-460b-b955-a970df175c32/resourceGroups/rg-ElisJacob/providers/Microsoft.Web/sites/BackendGruppii",
+    "appService.deploySubpath": "."
+}

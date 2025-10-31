@@ -1,8 +1,0 @@
-﻿node_modules/
-npm-debug.log*
-.env
-.env.*
-deployment.zip
-deploy.zip
-backend-gruppii-logs/
-backend-gruppii-errors-top20.txt
